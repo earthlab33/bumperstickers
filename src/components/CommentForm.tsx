@@ -42,7 +42,7 @@ export const CommentForm: React.FC = () => {
         onChange={(e) => setComment(e.target.value)}
         className="w-full p-2 border rounded-lg"
         rows={4}
-        placeholder="Write your comment..."
+        placeholder="Send the author a private message..."
         required
       />
       <button
@@ -50,7 +50,7 @@ export const CommentForm: React.FC = () => {
         disabled={isSubmitting}
         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
       >
-        {isSubmitting ? 'Posting...' : 'Post Comment'}
+        {isSubmitting ? 'Sending...' : 'Send Message'}
       </button>
     </form>
   );
