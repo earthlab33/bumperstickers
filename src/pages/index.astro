@@ -1,0 +1,59 @@
+---
+import { ContentArea } from "../components/ContentArea";
+import { LikeButton } from "../components/LikeButton";
+import { CommentForm } from "../components/CommentForm";
+import { getSiteConfig } from "../lib/supabase";
+import "../styles/global.css";
+
+// Get the domain from the environment variable
+const domain = import.meta.env.PUBLIC_SITE_DOMAIN || "default";
+console.log(
+	"Environment variable PUBLIC_SITE_DOMAIN:",
+	import.meta.env.PUBLIC_SITE_DOMAIN,
+);
+console.log("Using domain:", domain);
+
+// Fetch the site configuration
+const config = await getSiteConfig(domain);
+
+// Fallback to default config if none found
+const defaultConfig = {
+	id: "default",
+	user_id: "default",
+	domain_id: "default",
+	title: "Testing Bumper Sticker",
+	content: "Bumper Sticker Testing",
+	status: "active",
+	created_at: new Date().toISOString(),
+	updated_at: new Date().toISOString(),
+	accepts_likes: true,
+	domain: domain,
+	theme: "radical",
+	deployment_url: "",
+	messages: true,
+	likes: 0,
+};
+
+const siteConfig = config || defaultConfig;
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body class="min-h-screen bg-gray-100">
+		<main class="container mx-auto px-4 py-8">
+			<ContentArea client:load config={siteConfig} />
+			<div class="flex justify-center mt-4">
+				<LikeButton client:load />
+			</div>
+			<div class="max-w-2xl mx-auto mt-8">
+				<CommentForm client:load />
+			</div>
+		</main>
+	</body>
+</html>
