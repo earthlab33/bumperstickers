@@ -64,15 +64,15 @@ export async function listAllDomains(): Promise<string[]> {
     }
 }
 
-export async function getSiteConfig(domain: string): Promise<SiteConfig | null> {
+export async function getSiteConfig(id: string): Promise<SiteConfig | null> {
     try {
-        console.log('Attempting to fetch config for domain:', domain);
+        console.log('Attempting to fetch config for ID:', id);
 
         const { data, error } = await supabase
             .from('bumperstickers')
             .select('*')
-            .eq('domain', domain)
-            .maybeSingle();  // Using maybeSingle instead of single to avoid errors
+            .eq('id', id)
+            .maybeSingle();
 
         if (error) {
             console.error('Supabase error:', error);
@@ -80,7 +80,7 @@ export async function getSiteConfig(domain: string): Promise<SiteConfig | null> 
         }
 
         if (!data) {
-            console.log('No data found for domain:', domain);
+            console.log('No data found for ID:', id);
             return null;
         }
 

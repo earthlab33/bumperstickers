@@ -5,16 +5,12 @@ import { CommentForm } from "../components/CommentForm";
 import { getSiteConfig } from "../lib/supabase";
 import "../styles/global.css";
 
-// Get the domain from the environment variable
-const domain = import.meta.env.PUBLIC_SITE_DOMAIN || "default";
-console.log(
-	"Environment variable PUBLIC_SITE_DOMAIN:",
-	import.meta.env.PUBLIC_SITE_DOMAIN,
-);
-console.log("Using domain:", domain);
+// Get the bumpersticker ID from the environment variable
+const bumperstickerId = import.meta.env.BUMPERSTICKER_ID;
+console.log("Environment variable BUMPERSTICKER_ID:", bumperstickerId);
 
 // Fetch the site configuration
-const config = await getSiteConfig(domain);
+const config = await getSiteConfig(bumperstickerId);
 
 // Fallback to default config if none found
 const defaultConfig = {
@@ -27,7 +23,7 @@ const defaultConfig = {
 	created_at: new Date().toISOString(),
 	updated_at: new Date().toISOString(),
 	accepts_likes: true,
-	domain: domain,
+	domain: "default",
 	theme: "radical",
 	deployment_url: "",
 	messages: true,
