@@ -24,7 +24,7 @@ const defaultConfig = {
 	updated_at: new Date().toISOString(),
 	accepts_likes: true,
 	domain: "default",
-	theme: "radical",
+	theme: "artistic",
 	deployment_url: "",
 	messages: true,
 	likes: 0,
@@ -47,11 +47,13 @@ const siteConfig = config || defaultConfig;
 			<div class="w-4/5 mt-8">
 				<ContentArea client:load config={siteConfig} />
 			</div>
-			<div class="flex items-center justify-center gap-4 mt-8 w-4/5">
+			<div
+				class="flex items-center justify-center align-top gap-4 mt-8 w-4/5"
+			>
 				<LikeButton client:load />
 				<button
 					id="toggleComments"
-					class="p-2 rounded-full hover:bg-gray-600"
+					class="-mt-4 hover:text-red-500 hover:scale-110 transition-all duration-300"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

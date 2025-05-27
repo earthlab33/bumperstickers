@@ -37,21 +37,24 @@ export const CommentForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
+      <div className="flex flex-col items-center">
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="w-full p-2 border rounded-lg"
+        className="w-3/5 mx-auto p-2 border rounded-lg"
         rows={4}
         placeholder="Send the author a private message..."
         required
       />
+     
       <button
         type="submit"
         disabled={isSubmitting}
         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}
-      </button>
+        </button>
+      </div>
     </form>
   );
 }; 
