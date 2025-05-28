@@ -19,6 +19,10 @@ export interface SiteConfig {
     theme: string;
     deployment_url: string;
     messages: boolean;
+    seo: boolean;
+    keywords: string;
+    description: string;
+    author: string;
     likes: number;
 }
 
@@ -110,7 +114,11 @@ export async function createSiteConfig(
                     accepts_likes: config.accepts_likes,
                     messages: config.messages,
                     likes: config.likes,
-                    deployment_url: config.deployment_url
+                    seo: config.seo,
+                    deployment_url: config.deployment_url,
+                    keywords: config.keywords,
+                    description: config.description,
+                    author: config.author
                 }
             ])
             .select()

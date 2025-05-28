@@ -50,6 +50,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     text-white 
     font-['Bebas_Neue'] 
     text-3xl 
+    text-center
     uppercase 
     tracking-widest
     leading-tight
@@ -66,6 +67,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     text-indigo-900 
     font-['Montserrat']
     text-2xl 
+    text-center
     leading-snug
     tracking-wide
     after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r after:from-indigo-500 after:to-purple-500
@@ -79,6 +81,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     text-amber-900 
     font-serif 
     text-xl 
+    text-center
     leading-relaxed
     italic
     before:content-['"'] before:absolute before:top-0 before:left-2 before:text-6xl before:text-amber-300 before:font-serif before:opacity-50
