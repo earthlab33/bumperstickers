@@ -28,37 +28,24 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
     };
     getIpAddress();
 
-    // Fetch current likes count and check if this IP has already liked
-    const fetchData = async () => {
+    // Fetch current likes count
+    const fetchLikes = async () => {
       try {
-        // Get current likes count
-        const { data: bumpersticker, error: fetchError } = await supabase
+        const { data, error } = await supabase
           .from('bumperstickers')
           .select('likes')
           .eq('id', bumperstickerId)
           .single();
 
-        if (fetchError) throw fetchError;
-        setLikes(bumpersticker.likes || 0);
-
-        // Check if this IP has already liked
-        if (ipAddress) {
-          const { data } = await supabase
-            .from('likes')
-            .select('id')
-            .eq('bumpersticker_id', bumperstickerId)
-            .eq('ip_address', ipAddress)
-            .single();
-          
-          setHasLiked(!!data);
-        }
+        if (error) throw error;
+        setLikes(data.likes || 0);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching likes:', error);
       }
     };
 
-    fetchData();
-  }, [bumperstickerId, ipAddress]);
+    fetchLikes();
+  }, [bumperstickerId]);
 
   const handleLike = async () => {
     if (!ipAddress) {
@@ -67,50 +54,18 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
     }
 
     try {
-      if (hasLiked) {
-        // Unlike
-        const { error: deleteError } = await supabase
-          .from('likes')
-          .delete()
-          .eq('bumpersticker_id', bumperstickerId)
-          .eq('ip_address', ipAddress);
+      const newLikes = hasLiked ? likes - 1 : likes + 1;
+      const { error } = await supabase
+        .from('bumperstickers')
+        .update({ likes: newLikes })
+        .eq('id', bumperstickerId);
 
-        if (deleteError) throw deleteError;
+      if (error) throw error;
 
-        // Update bumpersticker likes count
-        const { error: updateError } = await supabase
-          .from('bumperstickers')
-          .update({ likes: likes - 1 })
-          .eq('id', bumperstickerId);
-
-        if (updateError) throw updateError;
-
-        setLikes(prev => prev - 1);
-        setHasLiked(false);
-      } else {
-        // Like
-        const { error: insertError } = await supabase
-          .from('likes')
-          .insert([{
-            bumpersticker_id: bumperstickerId,
-            ip_address: ipAddress
-          }]);
-
-        if (insertError) throw insertError;
-
-        // Update bumpersticker likes count
-        const { error: updateError } = await supabase
-          .from('bumperstickers')
-          .update({ likes: likes + 1 })
-          .eq('id', bumperstickerId);
-
-        if (updateError) throw updateError;
-
-        setLikes(prev => prev + 1);
-        setHasLiked(true);
-      }
+      setLikes(newLikes);
+      setHasLiked(!hasLiked);
     } catch (error) {
-      console.error('Error toggling like:', error);
+      console.error('Error updating likes:', error);
     }
   };
 
