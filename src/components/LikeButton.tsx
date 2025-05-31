@@ -13,21 +13,8 @@ interface LikeButtonProps {
 export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
   const [likes, setLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
-  const [ipAddress, setIpAddress] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get IP address
-    const getIpAddress = async () => {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        setIpAddress(data.ip);
-      } catch (error) {
-        console.error('Error getting IP address:', error);
-      }
-    };
-    getIpAddress();
-
     // Fetch current likes count
     const fetchLikes = async () => {
       try {
@@ -48,11 +35,6 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
   }, [bumperstickerId]);
 
   const handleLike = async () => {
-    if (!ipAddress) {
-      console.error('IP address not available');
-      return;
-    }
-
     try {
       const newLikes = hasLiked ? likes - 1 : likes + 1;
       const { error } = await supabase
