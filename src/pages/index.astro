@@ -71,7 +71,7 @@ const siteConfig = config || defaultConfig;
 			<div
 				class="flex items-center justify-center align-top gap-4 mt-8 w-4/5"
 			>
-				<LikeButton client:load />
+				<LikeButton client:load bumperstickerId={siteConfig.id} />
 				<button
 					id="toggleComments"
 					class="-mt-4 hover:text-red-500 hover:scale-110 transition-all duration-300"
