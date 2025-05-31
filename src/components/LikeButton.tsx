@@ -13,11 +13,13 @@ interface LikeButtonProps {
 export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
   const [likes, setLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Initialize likes and like state
   useEffect(() => {
-    // Fetch current likes count
-    const fetchLikes = async () => {
+    const initializeLikes = async () => {
       try {
+        // Get current likes from database
         const { data, error } = await supabase
           .from('bumperstickers')
           .select('likes')
@@ -25,38 +27,78 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
           .single();
 
         if (error) throw error;
-        setLikes(data.likes || 0);
+
+        const currentLikes = data.likes || 0;
+        console.log('Initial likes from database:', currentLikes);
+        setLikes(currentLikes);
+
+        // Check localStorage for like status
+        if (typeof window !== 'undefined') {
+          const stored = localStorage.getItem(`liked_${bumperstickerId}`);
+          // If we have a stored like status, use it
+          if (stored !== null) {
+            setHasLiked(stored === 'true');
+          } else {
+            // If no stored status, set hasLiked based on current likes
+            // This assumes the user hasn't liked if there are no likes
+            setHasLiked(false);
+          }
+        }
       } catch (error) {
-        console.error('Error fetching likes:', error);
+        console.error('Error initializing likes:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchLikes();
+    initializeLikes();
   }, [bumperstickerId]);
 
   const handleLike = async () => {
+    if (isLoading) return;
+
     try {
-      const newLikes = hasLiked ? likes - 1 : likes + 1;
-      const { error } = await supabase
+      setIsLoading(true);
+      const newLikes = hasLiked ? Math.max(0, likes - 1) : likes + 1;
+      console.log('Attempting to update likes to:', newLikes);
+      
+      // Update database first
+      const { data, error } = await supabase
         .from('bumperstickers')
         .update({ likes: newLikes })
-        .eq('id', bumperstickerId);
+        .eq('id', bumperstickerId)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database update error:', error);
+        throw error;
+      }
 
+      console.log('Database update successful:', data);
+
+      // Only update local state if database update was successful
       setLikes(newLikes);
-      setHasLiked(!hasLiked);
+      const newHasLiked = !hasLiked;
+      setHasLiked(newHasLiked);
+      
+      // Update localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`liked_${bumperstickerId}`, String(newHasLiked));
+      }
     } catch (error) {
       console.error('Error updating likes:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <button
       onClick={handleLike}
+      disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
         hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
-      }`}
+      } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
