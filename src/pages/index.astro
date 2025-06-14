@@ -1,7 +1,9 @@
 ---
 import { ContentArea } from "../components/ContentArea";
 import { LikeButton } from "../components/LikeButton";
-import { CommentForm } from "../components/CommentForm";
+import { InterestButton } from "../components/InterestButton";
+import { WowButton } from "../components/WowButton";
+import { Poll } from "../components/Poll";
 import { getSiteConfig } from "../lib/supabase";
 import "../styles/global.css";
 
@@ -72,6 +74,8 @@ const siteConfig = config || defaultConfig;
 				class="flex items-center justify-center align-top gap-4 mt-8 w-4/5"
 			>
 				<LikeButton client:load bumperstickerId={siteConfig.id} />
+				<InterestButton client:load bumperstickerId={siteConfig.id} />
+				<WowButton client:load bumperstickerId={siteConfig.id} />
 				<button
 					id="toggleComments"
 					class="-mt-4 hover:text-red-500 hover:scale-110 transition-all duration-300"
@@ -92,16 +96,16 @@ const siteConfig = config || defaultConfig;
 					</svg>
 				</button>
 			</div>
-			<div id="commentForm" class="hidden w-4/5 mt-4">
-				<CommentForm client:load />
+			<div id="pollForm" class="hidden w-4/5 mt-4">
+				<Poll client:load bumperstickerId={siteConfig.id} />
 			</div>
 		</main>
 		<script>
 			const toggleButton = document.getElementById("toggleComments");
-			const commentForm = document.getElementById("commentForm");
+			const pollForm = document.getElementById("pollForm");
 
 			toggleButton?.addEventListener("click", () => {
-				commentForm?.classList.toggle("hidden");
+				pollForm?.classList.toggle("hidden");
 			});
 		</script>
 	</body>
