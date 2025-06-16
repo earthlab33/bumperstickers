@@ -8,9 +8,10 @@ const supabase = createClient(
 
 interface InterestButtonProps {
   bumperstickerId: string;
+  title?: string;
 }
 
-export const InterestButton: React.FC<InterestButtonProps> = ({ bumperstickerId }) => {
+export const InterestButton: React.FC<InterestButtonProps> = ({ bumperstickerId, title }) => {
   const [interests, setInterests] = useState(0);
   const [hasInterest, setHasInterest] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,9 +97,10 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ bumperstickerId 
     <button
       onClick={handleInterest}
       disabled={isLoading}
-      className={`interesting-button p-2 rounded-full transition-colors ${
+      className={`interest-button p-2 rounded-full transition-colors ${
         hasInterest ? 'text-green-500' : 'text-gray-400 hover:text-green-500'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

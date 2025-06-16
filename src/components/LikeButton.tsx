@@ -8,9 +8,10 @@ const supabase = createClient(
 
 interface LikeButtonProps {
   bumperstickerId: string;
+  title?: string;
 }
 
-export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
+export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId, title }) => {
   const [likes, setLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -99,6 +100,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId }) => {
       className={`like-button p-2 rounded-full transition-colors ${
         hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

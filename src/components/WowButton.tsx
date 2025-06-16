@@ -8,9 +8,10 @@ const supabase = createClient(
 
 interface WowButtonProps {
   bumperstickerId: string;
+  title?: string;
 }
 
-export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId }) => {
+export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) => {
   const [wows, setWows] = useState(0);
   const [hasWow, setHasWow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -99,6 +100,7 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId }) => {
       className={`like-button p-2 rounded-full transition-colors ${
         hasWow ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
