@@ -94,7 +94,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
   };
 
   return (
-      <div className={`${getThemeClasses()}`}>
+      <div className={`${getThemeClasses()} select-none`} style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}>
         {config.content}
       </div>
   );
