@@ -72,6 +72,9 @@ export async function getSiteConfig(id: string): Promise<SiteConfig | null> {
     try {
         console.log('Attempting to fetch config for ID:', id);
 
+        // Add cache-busting parameter
+        const cacheBust = Date.now();
+
         const { data, error } = await supabase
             .from('bumperstickers')
             .select('*')
