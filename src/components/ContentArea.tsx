@@ -93,8 +93,77 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     }
   };
 
+  const getSuperscriptClasses = () => {
+    switch (config.theme) {
+      case 'artistic':
+        return `
+        text-emerald-300 
+        font-['Goudy_Old_Style'] 
+        text-lg 
+        italic 
+        mb-4 
+        text-center
+        [text-shadow:_1px_1px_2px_rgb(0_0_0_/_30%)]
+        before:content-['✦'] before:mr-2 before:text-emerald-400
+        after:content-['✦'] after:ml-2 after:text-emerald-400
+        `;
+      case 'minimalist':
+        return `
+        text-gray-500 
+        font-['Playfair_Display'] 
+        text-sm 
+        uppercase 
+        tracking-widest 
+        mb-6 
+        text-center
+        before:content-[''] before:block before:w-8 before:h-px before:bg-gray-300 before:mx-auto before:mb-2
+        after:content-[''] after:block after:w-8 after:h-px after:bg-gray-300 after:mx-auto after:mt-2
+        `;
+      case 'bold':
+        return `
+        text-yellow-400 
+        font-['Bebas_Neue'] 
+        text-xl 
+        uppercase 
+        tracking-widest 
+        mb-4 
+        text-center
+        [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)]
+        before:content-['★'] before:mr-3 before:text-yellow-300
+        after:content-['★'] after:ml-3 after:text-yellow-300
+        `;
+      case 'modern':
+        return `
+        text-indigo-600 
+        font-['Montserrat'] 
+        text-sm 
+        font-semibold 
+        uppercase 
+        tracking-wider 
+        mb-4 
+        text-center
+        before:content-[''] before:inline-block before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full before:mr-2
+        after:content-[''] after:inline-block after:w-2 after:h-2 after:bg-indigo-500 after:rounded-full after:ml-2
+        `;
+      case 'elegant':
+        return `
+        text-amber-700 
+        font-serif 
+        text-base 
+        italic 
+        mb-6 
+        text-center
+        before:content-['❦'] before:mr-3 before:text-amber-500 before:text-lg
+        after:content-['❦'] after:ml-3 after:text-amber-500 after:text-lg
+        `;
+      default:
+        return 'text-gray-300';
+    }
+  };
+
   return (
       <div className={`${getThemeClasses()} select-none`} style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}>
+        <span className={`${getSuperscriptClasses()}`}>{config.superscript}</span>
         {config.content}
       </div>
   );

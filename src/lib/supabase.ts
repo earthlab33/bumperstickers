@@ -20,10 +20,12 @@ export interface SiteConfig {
     deployment_url: string;
     messages: boolean;
     seo: boolean;
+    aiscrape: boolean;
     keywords: string;
     description: string;
     author: string;
     likes: number;
+    superscript: string;
 }
 
 export async function testConnection() {
@@ -110,6 +112,7 @@ export async function createSiteConfig(
                 {
                     user_id: userId,
                     content: config.content,
+                    superscript: config.superscript,
                     theme: config.theme,
                     title: config.title,
                     domain: config.domain,
@@ -118,6 +121,7 @@ export async function createSiteConfig(
                     messages: config.messages,
                     likes: config.likes,
                     seo: config.seo,
+                    aiscrape: config.aiscrape,
                     deployment_url: config.deployment_url,
                     keywords: config.keywords,
                     description: config.description,
