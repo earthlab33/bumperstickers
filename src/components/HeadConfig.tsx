@@ -66,7 +66,11 @@ interface HeadConfigurationProps {
 
 // Main component
 export default function HeadConfiguration({ siteConfig }: HeadConfigurationProps) {
-  if (siteConfig.seo && siteConfig.aiscrape) {
+  // Use config values if available, fallback to legacy values
+  const seo = siteConfig.config?.seo ?? siteConfig.seo;
+  const aiScraping = siteConfig.config?.aiScraping ?? siteConfig.aiscrape;
+
+  if (seo && aiScraping) {
     // Allow both SEO and AI bots
     return (
       <>
@@ -75,7 +79,7 @@ export default function HeadConfiguration({ siteConfig }: HeadConfigurationProps
         <AIBotAllowTags />
       </>
     );
-  } else if (siteConfig.seo && !siteConfig.aiscrape) {
+  } else if (seo && !aiScraping) {
     // Allow SEO bots, block AI bots
     return (
       <>
@@ -84,7 +88,7 @@ export default function HeadConfiguration({ siteConfig }: HeadConfigurationProps
         <AIBotBlockTags />
       </>
     );
-  } else if (!siteConfig.seo && siteConfig.aiscrape) {
+  } else if (!seo && aiScraping) {
     // Block SEO bots, allow AI bots (unusual case)
     return (
       <>

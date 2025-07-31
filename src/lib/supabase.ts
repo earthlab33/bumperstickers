@@ -5,6 +5,29 @@ export const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 );
 
+export interface StyleConfig {
+    seo: boolean;
+    content: string;
+    heading: string;
+    justify: string;
+    leading: string;
+    bodyText: string;
+    fontColor: string;
+    fontStyle: string;
+    aiScraping: boolean;
+    borderColor: string;
+    borderStyle: string;
+    borderWidth: string;
+    headingText: string;
+    acceptsLikes: boolean;
+    acceptsTerms: boolean;
+    bodyFontSize: string;
+    borderRadius: string;
+    backgroundColor: string;
+    headerAlignment: string;
+    headingFontSize: string;
+}
+
 export interface SiteConfig {
     id: string;
     user_id: string;
@@ -26,6 +49,7 @@ export interface SiteConfig {
     author: string;
     likes: number;
     superscript: string;
+    config?: StyleConfig;
 }
 
 export async function testConnection() {

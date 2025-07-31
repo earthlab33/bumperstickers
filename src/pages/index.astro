@@ -37,6 +37,28 @@ const defaultConfig = {
 	description: "test description",
 	author: "test author",
 	likes: 0,
+	config: {
+		seo: true,
+		content: "Default Content",
+		heading: "BumperSticker Pages",
+		justify: "center",
+		leading: "normal",
+		bodyText: "Default Body Text",
+		fontColor: "#fd0909",
+		fontStyle: "Impact, Charcoal, sans-serif",
+		aiScraping: true,
+		borderColor: "#ef0000",
+		borderStyle: "accent",
+		borderWidth: "1",
+		headingText: "Default Heading Text",
+		acceptsLikes: true,
+		acceptsTerms: true,
+		bodyFontSize: "37",
+		borderRadius: "47",
+		backgroundColor: "#12e027",
+		headerAlignment: "center",
+		headingFontSize: "49",
+	},
 };
 
 const siteConfig = config || defaultConfig;
@@ -60,21 +82,28 @@ const siteConfig = config || defaultConfig;
 			<div
 				class="flex items-center justify-center align-top gap-4 mt-8 w-4/5"
 			>
-				<LikeButton
-					client:load
-					bumperstickerId={siteConfig.id}
-					title="Like"
-				/>
-				<InterestButton
-					client:load
-					bumperstickerId={siteConfig.id}
-					title="Interesting"
-				/>
-				<WowButton
-					client:load
-					bumperstickerId={siteConfig.id}
-					title="Wow"
-				/>
+				{
+					(siteConfig.config?.acceptsLikes ??
+						siteConfig.accepts_likes) && (
+						<>
+							<LikeButton
+								client:load
+								bumperstickerId={siteConfig.id}
+								title="Like"
+							/>
+							<InterestButton
+								client:load
+								bumperstickerId={siteConfig.id}
+								title="Interesting"
+							/>
+							<WowButton
+								client:load
+								bumperstickerId={siteConfig.id}
+								title="Wow"
+							/>
+						</>
+					)
+				}
 				<button
 					id="toggleComments"
 					class="-mt-4 hover:text-red-500 hover:scale-110 transition-all duration-300"

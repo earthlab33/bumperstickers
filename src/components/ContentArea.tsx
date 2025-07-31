@@ -6,6 +6,95 @@ interface ContentAreaProps {
 }
 
 export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
+  // Use config values if available, fallback to legacy values
+  const styleConfig = config.config;
+  
+  if (!styleConfig) {
+    // Fallback to legacy theme-based styling
+    return <LegacyContentArea config={config} />;
+  }
+
+  // Generate dynamic styles based on styleConfig
+  const containerStyle = {
+    backgroundColor: styleConfig.backgroundColor,
+    borderColor: styleConfig.borderColor,
+    borderWidth: `${styleConfig.borderWidth}px`,
+    borderRadius: `${styleConfig.borderRadius}px`,
+    padding: '2rem',
+    textAlign: styleConfig.justify as 'left' | 'center' | 'right',
+    lineHeight: styleConfig.leading,
+    userSelect: 'none' as const,
+    WebkitUserSelect: 'none' as const,
+    MozUserSelect: 'none' as const,
+    msUserSelect: 'none' as const,
+  };
+
+  const headingStyle = {
+    color: styleConfig.fontColor,
+    fontFamily: styleConfig.fontStyle,
+    fontSize: `${styleConfig.headingFontSize}px`,
+    textAlign: styleConfig.headerAlignment as 'left' | 'center' | 'right',
+    marginBottom: '1rem',
+    fontWeight: 'bold',
+  };
+
+  const bodyStyle = {
+    color: styleConfig.fontColor,
+    fontFamily: styleConfig.fontStyle,
+    fontSize: `${styleConfig.bodyFontSize}px`,
+    textAlign: styleConfig.justify as 'left' | 'center' | 'right',
+    lineHeight: styleConfig.leading,
+  };
+
+  // Determine border style
+  const getBorderStyle = () => {
+    switch (styleConfig.borderStyle) {
+      case 'none':
+        return 'border-none';
+      case 'simple':
+        return 'border border-solid';
+      case 'double':
+        return 'border-2 border-double';
+      case 'thick':
+        return 'border-4 border-solid';
+      case 'dashed':
+        return 'border-2 border-dashed';
+      case 'dotted':
+        return 'border-2 border-dotted';
+      case 'shadow':
+        return 'border shadow-lg';
+      case 'accent':
+        return 'border-l-8 border-t-0 border-r-0 border-b-8';
+      case 'outline':
+        return 'border-0 shadow-lg';
+      case 'modern':
+        return 'border-l-4 border-t border-r border-b';
+      case 'vintage':
+        return 'border-4 border-double';
+      default:
+        return 'border border-solid';
+    }
+  };
+
+  return (
+    <div 
+      className={`${getBorderStyle()} select-none`} 
+      style={containerStyle}
+    >
+      {styleConfig.heading && (
+        <h1 style={headingStyle}>
+          {styleConfig.heading}
+        </h1>
+      )}
+      <div style={bodyStyle}>
+        {styleConfig.bodyText}
+      </div>
+    </div>
+  );
+};
+
+// Legacy component for backward compatibility
+const LegacyContentArea: React.FC<ContentAreaProps> = ({ config }) => {
   const getThemeClasses = () => {
     switch (config.theme) {
       case 'artistic':
@@ -72,9 +161,9 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     tracking-wide
     after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r after:from-indigo-500 after:to-purple-500
         `;
-        case 'elegant':
-            return `
-            relative 
+      case 'elegant':
+        return `
+        relative 
     bg-amber-50 
     px-8 py-10
     border-t-2 border-b-2 border-amber-800
@@ -87,65 +176,15 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     before:content-['"'] before:absolute before:top-0 before:left-2 before:text-6xl before:text-amber-300 before:font-serif before:opacity-50
     after:content-['"'] after:absolute after:bottom-0 after:right-2 after:text-6xl after:text-amber-300 after:font-serif after:opacity-50
     first-letter:text-5xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:text-amber-800
-            `;
+        `;
       default:
-        return 'bg-gray-800 text-white font-bold text-2xl font-["Arial Black"] py-16 shadow-lg max-w-4xl mx-auto my-8 prose text-center';
+        return 'bg-white p-8 border border-gray-300 rounded text-gray-900';
     }
   };
 
   const getSuperscriptClasses = () => {
     switch (config.theme) {
       case 'artistic':
-        return `
-        text-emerald-300 
-        font-['Goudy_Old_Style'] 
-        text-lg 
-        italic 
-        mb-4 
-        text-center
-        [text-shadow:_1px_1px_2px_rgb(0_0_0_/_30%)]
-        before:content-['✦'] before:mr-2 before:text-emerald-400
-        after:content-['✦'] after:ml-2 after:text-emerald-400
-        `;
-      case 'minimalist':
-        return `
-        text-gray-500 
-        font-['Playfair_Display'] 
-        text-sm 
-        uppercase 
-        tracking-widest 
-        mb-6 
-        text-center
-        before:content-[''] before:block before:w-8 before:h-px before:bg-gray-300 before:mx-auto before:mb-2
-        after:content-[''] after:block after:w-8 after:h-px after:bg-gray-300 after:mx-auto after:mt-2
-        `;
-      case 'bold':
-        return `
-        text-yellow-400 
-        font-['Bebas_Neue'] 
-        text-xl 
-        uppercase 
-        tracking-widest 
-        mb-4 
-        text-center
-        [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)]
-        before:content-['★'] before:mr-3 before:text-yellow-300
-        after:content-['★'] after:ml-3 after:text-yellow-300
-        `;
-      case 'modern':
-        return `
-        text-indigo-600 
-        font-['Montserrat'] 
-        text-sm 
-        font-semibold 
-        uppercase 
-        tracking-wider 
-        mb-4 
-        text-center
-        before:content-[''] before:inline-block before:w-2 before:h-2 before:bg-indigo-500 before:rounded-full before:mr-2
-        after:content-[''] after:inline-block after:w-2 after:h-2 after:bg-indigo-500 after:rounded-full after:ml-2
-        `;
-      case 'elegant':
         return `
         text-amber-700 
         font-serif 
@@ -162,9 +201,9 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
   };
 
   return (
-      <div className={`${getThemeClasses()} select-none`} style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}>
-        <span className={`${getSuperscriptClasses()}`}>{config.superscript}</span>
-        {config.content}
-      </div>
+    <div className={`${getThemeClasses()} select-none`} style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}>
+      <span className={`${getSuperscriptClasses()}`}>{config.superscript}</span>
+      {config.content}
+    </div>
   );
 }; 
