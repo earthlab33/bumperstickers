@@ -4,7 +4,7 @@ import { LikeButton } from "../components/LikeButton";
 import { InterestButton } from "../components/InterestButton";
 import { WowButton } from "../components/WowButton";
 import { Poll } from "../components/Poll";
-import { getSiteConfig } from "../lib/supabase";
+import { getSiteConfig, type SiteConfig } from "../lib/supabase";
 import HeadConfiguration from "../components/HeadConfig";
 import "../styles/global.css";
 
@@ -16,7 +16,7 @@ console.log("Environment variable BUMPERSTICKER_ID:", bumperstickerId);
 const config = await getSiteConfig(bumperstickerId);
 
 // Fallback to default config if none found
-const defaultConfig = {
+const defaultConfig: SiteConfig = {
 	id: "default",
 	user_id: "default",
 	domain_id: "default",
@@ -45,7 +45,11 @@ const defaultConfig = {
 		leading: "normal",
 		bodyText: "Default Body Text",
 		fontColor: "#fd0909",
-		fontStyle: "Impact, Charcoal, sans-serif",
+		headingFontColor: "#fd0909",
+		bodyFontColor: "#000000",
+		fontStyle: "Arial, Helvetica, sans-serif",
+		headingFontStyle: "Arial, Helvetica, sans-serif",
+		bodyFontStyle: "Arial, Helvetica, sans-serif",
 		aiScraping: true,
 		borderColor: "#ef0000",
 		borderStyle: "accent",

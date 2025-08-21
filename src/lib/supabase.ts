@@ -13,7 +13,11 @@ export interface StyleConfig {
     leading: string;
     bodyText: string;
     fontColor: string;
+    headingFontColor: string;
+    bodyFontColor: string;
     fontStyle: string;
+    headingFontStyle: string;
+    bodyFontStyle: string;
     aiScraping: boolean;
     borderColor: string;
     borderStyle: string;

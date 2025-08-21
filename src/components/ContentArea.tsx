@@ -30,8 +30,10 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
   };
 
   const headingStyle = {
-    color: styleConfig.fontColor,
+    color: styleConfig.headingFontColor,
     fontFamily: styleConfig.fontStyle,
+    fontStyle: styleConfig.headingFontStyle,
+    fontColor: styleConfig.headingFontColor,
     fontSize: `${styleConfig.headingFontSize}px`,
     textAlign: styleConfig.headerAlignment as 'left' | 'center' | 'right',
     marginBottom: '1rem',
@@ -39,8 +41,9 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
   };
 
   const bodyStyle = {
-    color: styleConfig.fontColor,
-    fontFamily: styleConfig.fontStyle,
+    color: styleConfig.bodyFontColor,
+    fontFamily: styleConfig.bodyFontStyle,
+    fontStyle: styleConfig.bodyFontStyle,
     fontSize: `${styleConfig.bodyFontSize}px`,
     textAlign: styleConfig.justify as 'left' | 'center' | 'right',
     lineHeight: styleConfig.leading,
