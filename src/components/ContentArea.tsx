@@ -31,7 +31,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
 
   const headingStyle = {
     color: styleConfig.headingFontColor,
-    fontFamily: styleConfig.fontStyle,
+    fontFamily: styleConfig.headingFontStyle,
     fontStyle: styleConfig.headingFontStyle,
     fontColor: styleConfig.headingFontColor,
     fontSize: `${styleConfig.headingFontSize}px`,
