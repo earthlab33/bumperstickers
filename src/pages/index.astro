@@ -141,29 +141,5 @@ const siteConfig = config || defaultConfig;
 				pollForm?.classList.toggle("hidden");
 			});
 		</script>
-		<script>
-			// Increment views count on page load
-			(async () => {
-				try {
-					const response = await fetch("/api/increment-views", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							bumperstickerId: "${siteConfig.id}",
-						}),
-					});
-
-					if (response.ok) {
-						console.log("Views incremented successfully");
-					} else {
-						console.error("Failed to increment views");
-					}
-				} catch (error) {
-					console.error("Error incrementing views:", error);
-				}
-			})();
-		</script>
 	</body>
 </html>
