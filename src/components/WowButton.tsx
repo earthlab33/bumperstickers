@@ -104,7 +104,7 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-8 w-8"
         fill={hasWow ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
