@@ -20,6 +20,78 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Adler';
+    src: url('/fonts/Adler.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AlexBrush';
+    src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bangers';
+    src: url('/fonts/Bangers.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'BeyondWonderland';
+    src: url('/fonts/BeyondWonderland.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Blackchancery';
+    src: url('/fonts/BLKCHCRY.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EraserRegular';
+    src: url('/fonts/EraserRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'LeagueGothic Regular';
+    src: url('/fonts/leaguegothic-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('/fonts/LuckiestGuy.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RunyTunesRevisited';
+    src: url('/fonts/RunyTunesRevisitedNF.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
