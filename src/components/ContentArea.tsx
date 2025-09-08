@@ -44,6 +44,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
     fontSize: `${styleConfig.bodyFontSize}px`,
     textAlign: styleConfig.justify as 'left' | 'center' | 'right',
     lineHeight: styleConfig.leading,
+    whiteSpace: 'pre-line',
   };
 
   // Determine border style
