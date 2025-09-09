@@ -55,23 +55,21 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
       case 'simple':
         return 'border border-solid';
       case 'double':
-        return 'border-2 border-double';
-      case 'thick':
-        return 'border-4 border-solid';
+        return 'border-double';
       case 'dashed':
-        return 'border-2 border-dashed';
+        return 'border-dashed';
       case 'dotted':
-        return 'border-2 border-dotted';
+        return 'border-dotted';
       case 'shadow':
-        return 'border shadow-lg';
+        return 'border shadow-2xl';
       case 'accent':
-        return 'border-l-8 border-t-0 border-r-0 border-b-8';
+        return 'border-l-4 border-t border-r border-b border-opacity-30 relative before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-current before:opacity-60 after:absolute after:top-0 after:left-0 after:w-2 after:h-2 after:bg-current after:transform after:rotate-45';
       case 'outline':
-        return 'border-0 shadow-lg';
+        return 'border-0 outline outline-2 outline-offset-2';
       case 'modern':
-        return 'border-l-4 border-t border-r border-b';
+        return 'border-2 rounded-lg shadow-md';
       case 'vintage':
-        return 'border-4 border-double';
+        return 'border-double shadow-inner shadow-2xl drop-shadow-lg ring-1 ring-inset ring-opacity-20 rounded-none relative before:absolute before:inset-[-2px] before:border before:border-dashed before:rounded-none before:opacity-30 after:absolute after:inset-[2px] after:border after:border-dotted after:rounded-none after:opacity-40';
       default:
         return 'border border-solid';
     }
