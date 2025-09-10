@@ -111,20 +111,6 @@ export async function getSiteConfig(id: string): Promise<SiteConfig | null> {
             .eq('id', id)
             .maybeSingle();
 
-        if (data) {
-            const currentViews = data.views || 0;
-            const { data: updateData, error: updateError } = await supabase
-                .from('bumperstickers')
-                .update({ views: currentViews + 1 })
-                .eq('id', id);
-
-            if (updateError) {
-                console.error('Error updating views:', updateError);
-            } else {
-                console.log('Views incremented successfully');
-            }
-        }
-
         if (error) {
             console.error('Supabase error:', error);
             throw error;
@@ -140,6 +126,45 @@ export async function getSiteConfig(id: string): Promise<SiteConfig | null> {
     } catch (error) {
         console.error('Error fetching site config:', error);
         return null;
+    }
+}
+
+export async function incrementViews(id: string): Promise<void> {
+    try {
+        console.log('Attempting to increment views for ID:', id);
+
+        // First get current views
+        const { data, error: fetchError } = await supabase
+            .from('bumperstickers')
+            .select('views')
+            .eq('id', id)
+            .maybeSingle();
+
+        if (fetchError) {
+            console.error('Error fetching current views:', fetchError);
+            return;
+        }
+
+        if (!data) {
+            console.log('No data found for ID:', id);
+            return;
+        }
+
+        const currentViews = data.views || 0;
+
+        // Increment views
+        const { error: updateError } = await supabase
+            .from('bumperstickers')
+            .update({ views: currentViews + 1 })
+            .eq('id', id);
+
+        if (updateError) {
+            console.error('Error updating views:', updateError);
+        } else {
+            console.log('Views incremented successfully');
+        }
+    } catch (error) {
+        console.error('Error incrementing views:', error);
     }
 }
 
