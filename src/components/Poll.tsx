@@ -114,17 +114,9 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
 
   if (isSubmitted) {
     return (
-      <div className="text-center p-8 bg-green-50 border-2 border-green-200 rounded-xl shadow-sm">
-        <div className="text-green-600 mb-4">
-          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-bold text-green-800 mb-3">Thank you!</h3>
-        <p className="text-green-700 text-lg">Your poll response has been submitted successfully.</p>
-        <div className="mt-4 text-sm text-green-600">
-          <p>Your response has been recorded and will not be shown again.</p>
-        </div>
+      <div className="text-center">
+        <h3 className="text-md font-bold text-gray-200 mb-3">Thank you!</h3>
+        <p className="text-gray-200 text-md">Your poll response has been submitted successfully.</p>
       </div>
     );
   }
