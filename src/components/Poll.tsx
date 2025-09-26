@@ -103,7 +103,7 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
   }
 
   if (!poll) {
-    return <div className="text-center">No active poll available for this bumpersticker.</div>;
+    return null;
   }
 
   return (

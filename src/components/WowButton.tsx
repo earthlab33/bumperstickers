@@ -122,7 +122,7 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
           d="M8 14h8M8 10h8M9 7h6"
         />
       </svg>
-      <span className="ml-2">{wows}</span>
+      <span className="ml-[2px]">{wows}</span>
     </button>
   );
 }; 
