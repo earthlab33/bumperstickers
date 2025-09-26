@@ -16,14 +16,23 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchPoll = async () => {
       try {
         const pollData = await getPollForBumpersticker(bumperstickerId);
         setPoll(pollData);
+        
+        // Check if poll was already submitted
+        const submittedKey = `poll_submitted_${bumperstickerId}`;
+        const wasSubmitted = localStorage.getItem(submittedKey) === 'true';
+        if (wasSubmitted) {
+          setIsSubmitted(true);
+        }
+        
         // Initialize answers object
-        if (pollData) {
+        if (pollData && !wasSubmitted) {
           const initialAnswers: Record<string, string | string[]> = {};
           pollData.questions.forEach(q => {
             initialAnswers[q.questionText] = q.questionType === 'multiple-choice' ? [] : '';
@@ -83,13 +92,10 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
 
       if (error) throw error;
 
-      // Reset answers
-      const initialAnswers: Record<string, string | string[]> = {};
-      poll.questions.forEach(q => {
-        initialAnswers[q.questionText] = q.questionType === 'multiple-choice' ? [] : '';
-      });
-      setAnswers(initialAnswers);
-      alert('Poll submitted successfully!');
+      // Mark as submitted and store in localStorage
+      setIsSubmitted(true);
+      const submittedKey = `poll_submitted_${bumperstickerId}`;
+      localStorage.setItem(submittedKey, 'true');
     } catch (error) {
       console.error('Error submitting poll:', error);
       alert('Error submitting poll. Please try again.');
@@ -104,6 +110,23 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
 
   if (!poll) {
     return null;
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className="text-center p-8 bg-green-50 border-2 border-green-200 rounded-xl shadow-sm">
+        <div className="text-green-600 mb-4">
+          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-bold text-green-800 mb-3">Thank you!</h3>
+        <p className="text-green-700 text-lg">Your poll response has been submitted successfully.</p>
+        <div className="mt-4 text-sm text-green-600">
+          <p>Your response has been recorded and will not be shown again.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
