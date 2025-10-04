@@ -13,11 +13,20 @@ import "../styles/global.css";
 const bumperstickerId = import.meta.env.BUMPERSTICKER_ID;
 console.log("Environment variable BUMPERSTICKER_ID:", bumperstickerId);
 
+// Check if bumperstickerId is valid
+if (!bumperstickerId || bumperstickerId === "undefined") {
+	console.error(
+		"BUMPERSTICKER_ID environment variable is not set or invalid",
+	);
+}
+
 // Fetch the site configuration
 const config = await getSiteConfig(bumperstickerId);
 
 // Check if a poll exists for this bumpersticker
+console.log("Fetching poll for bumperstickerId:", bumperstickerId);
 const poll = await getPollForBumpersticker(bumperstickerId);
+console.log("Poll fetch result:", poll);
 
 // Fallback to default config if none found
 const defaultConfig: SiteConfig = {
