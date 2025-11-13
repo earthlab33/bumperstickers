@@ -12,61 +12,61 @@ interface PeaceSignButtonProps {
 }
 
 export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerId, title }) => {
-  const [peaces, setPeaces] = useState(0);
-  const [hasPeace, setHasPeace] = useState(false);
+  const [supports, setSupports] = useState(0);
+  const [hasSupport, setHasSupport] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize peaces and peace state
+  // Initialize supports and support state
   useEffect(() => {
-    const initializePeaces = async () => {
+    const initializeSupports = async () => {
       try {
-        // Get current peaces from database
+        // Get current supports from database
         const { data, error } = await supabase
           .from('bumperstickers')
-          .select('peaces')
+          .select('supports')
           .eq('id', bumperstickerId)
           .single();
 
         if (error) throw error;
 
-        const currentPeaces = data.peaces || 0;
-        console.log('Initial peaces from database:', currentPeaces);
-        setPeaces(currentPeaces);
+        const currentSupports = data.supports || 0;
+        console.log('Initial supports from database:', currentSupports);
+        setSupports(currentSupports);
 
-        // Check localStorage for peace status
+        // Check localStorage for support status
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem(`peace_${bumperstickerId}`);
-          // If we have a stored peace status, use it
+            const stored = localStorage.getItem(`support_${bumperstickerId}`);
+          // If we have a stored support status, use it
           if (stored !== null) {
-            setHasPeace(stored === 'true');
+            setHasSupport(stored === 'true');
           } else {
-            // If no stored status, set hasPeace based on current peaces
-            // This assumes the user hasn't peaced if there are no peaces
-            setHasPeace(false);
+            // If no stored status, set hasSupport based on current supports
+            // This assumes the user hasn't supported if there are no supports
+            setHasSupport(false);
           }
         }
       } catch (error) {
-        console.error('Error initializing peaces:', error);
+        console.error('Error initializing supports:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initializePeaces();
+    initializeSupports();
   }, [bumperstickerId]);
 
-  const handlePeace = async () => {
+  const handleSupport = async () => {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
-      const newPeaces = hasPeace ? Math.max(0, peaces - 1) : peaces + 1;
-      console.log('Attempting to update peaces to:', newPeaces);
+      const newSupports = hasSupport ? Math.max(0, supports - 1) : supports + 1;
+      console.log('Attempting to update supports to:', newSupports);
       
       // Update database first
       const { data, error } = await supabase
         .from('bumperstickers')
-        .update({ peaces: newPeaces })
+        .update({ supports: newSupports })
         .eq('id', bumperstickerId)
         .select();
 
@@ -78,16 +78,16 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
       console.log('Database update successful:', data);
 
       // Only update local state if database update was successful
-      setPeaces(newPeaces);
-      const newHasPeace = !hasPeace;
-      setHasPeace(newHasPeace);
+      setSupports(newSupports);
+      const newHasSupport = !hasSupport;
+      setHasSupport(newHasSupport);
       
       // Update localStorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem(`peace_${bumperstickerId}`, String(newHasPeace));
+        localStorage.setItem(`support_${bumperstickerId}`, String(newHasSupport));
       }
     } catch (error) {
-      console.error('Error updating peaces:', error);
+      console.error('Error updating supports:', error);
     } finally {
       setIsLoading(false);
     }
@@ -95,17 +95,17 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
 
   return (
     <button
-      onClick={handlePeace}
+      onClick={handleSupport}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasPeace ? 'text-[#BCD2ED]' : 'text-gray-400 hover:text-[#BCD2ED]'
+        hasSupport ? 'text-[#BCD2ED]' : 'text-gray-400 hover:text-[#BCD2ED]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasPeace ? 'currentColor' : 'none'}
+        fill={hasSupport ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
@@ -122,7 +122,7 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
           d="M12 4v14M12 18l-6-6M12 18l6-6"
         />
       </svg>
-      <span className="ml-[0px]">{peaces}</span>
+      <span className="ml-[0px]">{supports}</span>
     </button>
   );
 };

@@ -12,61 +12,61 @@ interface QuestionMarkButtonProps {
 }
 
 export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperstickerId, title }) => {
-  const [questions, setQuestions] = useState(0);
-  const [hasQuestion, setHasQuestion] = useState(false);
+  const [confuseds, setConfuseds] = useState(0);
+  const [hasConfused, setHasConfused] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize questions and question state
+  // Initialize confuseds and confused state
   useEffect(() => {
-    const initializeQuestions = async () => {
+    const initializeConfuseds = async () => {
       try {
-        // Get current questions from database
+        // Get current confuseds from database
         const { data, error } = await supabase
           .from('bumperstickers')
-          .select('questions')
+          .select('confuseds')
           .eq('id', bumperstickerId)
           .single();
 
         if (error) throw error;
 
-        const currentQuestions = data.questions || 0;
-        console.log('Initial questions from database:', currentQuestions);
-        setQuestions(currentQuestions);
+        const currentConfuseds = data.confuseds || 0;
+        console.log('Initial confuseds from database:', currentConfuseds);
+        setConfuseds(currentConfuseds);
 
-        // Check localStorage for question status
+        // Check localStorage for confused status
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem(`question_${bumperstickerId}`);
-          // If we have a stored question status, use it
+          const stored = localStorage.getItem(`confused_${bumperstickerId}`);
+          // If we have a stored confused status, use it
           if (stored !== null) {
-            setHasQuestion(stored === 'true');
+            setHasConfused(stored === 'true');
           } else {
-            // If no stored status, set hasQuestion based on current questions
-            // This assumes the user hasn't questioned if there are no questions
-            setHasQuestion(false);
+            // If no stored status, set hasConfused based on current confuseds
+            // This assumes the user hasn't confused if there are no confuseds
+            setHasConfused(false);
           }
         }
       } catch (error) {
-        console.error('Error initializing questions:', error);
+        console.error('Error initializing confuseds:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initializeQuestions();
+    initializeConfuseds();
   }, [bumperstickerId]);
 
-  const handleQuestion = async () => {
+  const handleConfused = async () => {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
-      const newQuestions = hasQuestion ? Math.max(0, questions - 1) : questions + 1;
-      console.log('Attempting to update questions to:', newQuestions);
+      const newConfuseds = hasConfused ? Math.max(0, confuseds - 1) : confuseds + 1;
+      console.log('Attempting to update confuseds to:', newConfuseds);
       
       // Update database first
       const { data, error } = await supabase
         .from('bumperstickers')
-        .update({ questions: newQuestions })
+        .update({ confuseds: newConfuseds })
         .eq('id', bumperstickerId)
         .select();
 
@@ -78,16 +78,16 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
       console.log('Database update successful:', data);
 
       // Only update local state if database update was successful
-      setQuestions(newQuestions);
-      const newHasQuestion = !hasQuestion;
-      setHasQuestion(newHasQuestion);
+      setConfuseds(newConfuseds);
+      const newHasConfused = !hasConfused;
+      setHasConfused(newHasConfused);
       
       // Update localStorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem(`question_${bumperstickerId}`, String(newHasQuestion));
+        localStorage.setItem(`confused_${bumperstickerId}`, String(newHasConfused));
       }
     } catch (error) {
-      console.error('Error updating questions:', error);
+      console.error('Error updating confuseds:', error);
     } finally {
       setIsLoading(false);
     }
@@ -95,17 +95,17 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
 
   return (
     <button
-      onClick={handleQuestion}
+      onClick={handleConfused}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasQuestion ? 'text-[#3A3735]' : 'text-gray-400 hover:text-[#3A3735]'
+        hasConfused ? 'text-[#3A3735]' : 'text-gray-400 hover:text-[#3A3735]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasQuestion ? 'currentColor' : 'none'}
+        fill={hasConfused ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
@@ -127,7 +127,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
           r="1.5"
         />
       </svg>
-      <span className="ml-[0px]">{questions}</span>
+      <span className="ml-[0px]">{confuseds}</span>
     </button>
   );
 };

@@ -1,12 +1,11 @@
--- Add peaces column to bumperstickers table
+-- Add supports column to bumperstickers table
 ALTER TABLE bumperstickers
-ADD COLUMN IF NOT EXISTS peaces INTEGER DEFAULT 0;
+RENAME COLUMN peaces TO supports;
 
--- Add questions column to bumperstickers table
+-- Add confuseds column to bumperstickers table
 ALTER TABLE bumperstickers
-ADD COLUMN IF NOT EXISTS questions INTEGER DEFAULT 0;
+RENAME COLUMN questions TO confuseds;
 
 -- Optional: Add comments to document the columns
-COMMENT ON COLUMN bumperstickers.peaces IS 'Number of peace sign reactions';
-COMMENT ON COLUMN bumperstickers.questions IS 'Number of question mark reactions';
-
+COMMENT ON COLUMN bumperstickers.supports IS 'Number of support reactions';
+COMMENT ON COLUMN bumperstickers.confuseds IS 'Number of confused reactions';
