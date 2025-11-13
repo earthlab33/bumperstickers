@@ -3,6 +3,8 @@ import { ContentArea } from "../components/ContentArea";
 import { LikeButton } from "../components/LikeButton";
 import { InterestButton } from "../components/InterestButton";
 import { WowButton } from "../components/WowButton";
+import { PeaceSignButton } from "../components/PeaceSignButton";
+import { QuestionMarkButton } from "../components/QuestionMarkButton";
 import { Poll } from "../components/Poll";
 import { getSiteConfig, type SiteConfig } from "../lib/supabase";
 import { getPollForBumpersticker } from "../lib/sanity";
@@ -117,6 +119,16 @@ const siteConfig = config || defaultConfig;
 								client:load
 								bumperstickerId={siteConfig.id}
 								title="Wow"
+							/>
+							<PeaceSignButton
+								client:load
+								bumperstickerId={siteConfig.id}
+								title="Peace"
+							/>
+							<QuestionMarkButton
+								client:load
+								bumperstickerId={siteConfig.id}
+								title="Question"
 							/>
 						</>
 					)

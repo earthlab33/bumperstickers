@@ -6,67 +6,67 @@ const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 );
 
-interface LikeButtonProps {
+interface PeaceSignButtonProps {
   bumperstickerId: string;
   title?: string;
 }
 
-export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId, title }) => {
-  const [likes, setLikes] = useState(0);
-  const [hasLiked, setHasLiked] = useState(false);
+export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerId, title }) => {
+  const [peaces, setPeaces] = useState(0);
+  const [hasPeace, setHasPeace] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize likes and like state
+  // Initialize peaces and peace state
   useEffect(() => {
-    const initializeLikes = async () => {
+    const initializePeaces = async () => {
       try {
-        // Get current likes from database
+        // Get current peaces from database
         const { data, error } = await supabase
           .from('bumperstickers')
-          .select('likes')
+          .select('peaces')
           .eq('id', bumperstickerId)
           .single();
 
         if (error) throw error;
 
-        const currentLikes = data.likes || 0;
-        console.log('Initial likes from database:', currentLikes);
-        setLikes(currentLikes);
+        const currentPeaces = data.peaces || 0;
+        console.log('Initial peaces from database:', currentPeaces);
+        setPeaces(currentPeaces);
 
-        // Check localStorage for like status
+        // Check localStorage for peace status
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem(`liked_${bumperstickerId}`);
-          // If we have a stored like status, use it
+          const stored = localStorage.getItem(`peace_${bumperstickerId}`);
+          // If we have a stored peace status, use it
           if (stored !== null) {
-            setHasLiked(stored === 'true');
+            setHasPeace(stored === 'true');
           } else {
-            // If no stored status, set hasLiked based on current likes
-            // This assumes the user hasn't liked if there are no likes
-            setHasLiked(false);
+            // If no stored status, set hasPeace based on current peaces
+            // This assumes the user hasn't peaced if there are no peaces
+            setHasPeace(false);
           }
         }
       } catch (error) {
-        console.error('Error initializing likes:', error);
+        console.error('Error initializing peaces:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initializeLikes();
+    initializePeaces();
   }, [bumperstickerId]);
 
-  const handleLike = async () => {
+  const handlePeace = async () => {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
-      const newLikes = hasLiked ? Math.max(0, likes - 1) : likes + 1;
-      console.log('Attempting to update likes to:', newLikes);
+      const newPeaces = hasPeace ? Math.max(0, peaces - 1) : peaces + 1;
+      console.log('Attempting to update peaces to:', newPeaces);
       
       // Update database first
       const { data, error } = await supabase
         .from('bumperstickers')
-        .update({ likes: newLikes })
+        .update({ peaces: newPeaces })
         .eq('id', bumperstickerId)
         .select();
 
@@ -78,16 +78,16 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId, title }
       console.log('Database update successful:', data);
 
       // Only update local state if database update was successful
-      setLikes(newLikes);
-      const newHasLiked = !hasLiked;
-      setHasLiked(newHasLiked);
+      setPeaces(newPeaces);
+      const newHasPeace = !hasPeace;
+      setHasPeace(newHasPeace);
       
       // Update localStorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem(`liked_${bumperstickerId}`, String(newHasLiked));
+        localStorage.setItem(`peace_${bumperstickerId}`, String(newHasPeace));
       }
     } catch (error) {
-      console.error('Error updating likes:', error);
+      console.error('Error updating peaces:', error);
     } finally {
       setIsLoading(false);
     }
@@ -95,28 +95,34 @@ export const LikeButton: React.FC<LikeButtonProps> = ({ bumperstickerId, title }
 
   return (
     <button
-      onClick={handleLike}
+      onClick={handlePeace}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasLiked ? 'text-[#a10723]' : 'text-gray-400 hover:text-[#a10723]'
+        hasPeace ? 'text-[#BCD2ED]' : 'text-gray-400 hover:text-[#BCD2ED]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasLiked ? 'currentColor' : 'none'}
+        fill={hasPeace ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          strokeWidth={2}
+        />
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          d="M12 4v14M12 18l-6-6M12 18l6-6"
         />
       </svg>
-      <span className="ml-[0px]">{likes}</span>
+      <span className="ml-[0px]">{peaces}</span>
     </button>
   );
-}; 
+};

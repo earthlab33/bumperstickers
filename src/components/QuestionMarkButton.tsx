@@ -6,67 +6,67 @@ const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 );
 
-interface WowButtonProps {
+interface QuestionMarkButtonProps {
   bumperstickerId: string;
   title?: string;
 }
 
-export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) => {
-  const [wows, setWows] = useState(0);
-  const [hasWow, setHasWow] = useState(false);
+export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperstickerId, title }) => {
+  const [questions, setQuestions] = useState(0);
+  const [hasQuestion, setHasQuestion] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize wows and wow state
+  // Initialize questions and question state
   useEffect(() => {
-    const initializeWows = async () => {
+    const initializeQuestions = async () => {
       try {
-        // Get current wows from database
+        // Get current questions from database
         const { data, error } = await supabase
           .from('bumperstickers')
-          .select('wows')
+          .select('questions')
           .eq('id', bumperstickerId)
           .single();
 
         if (error) throw error;
 
-        const currentWows = data.wows || 0;
-        console.log('Initial wows from database:', currentWows);
-        setWows(currentWows);
+        const currentQuestions = data.questions || 0;
+        console.log('Initial questions from database:', currentQuestions);
+        setQuestions(currentQuestions);
 
-        // Check localStorage for wow status
+        // Check localStorage for question status
         if (typeof window !== 'undefined') {
-          const stored = localStorage.getItem(`wow_${bumperstickerId}`);
-          // If we have a stored wow status, use it
+          const stored = localStorage.getItem(`question_${bumperstickerId}`);
+          // If we have a stored question status, use it
           if (stored !== null) {
-            setHasWow(stored === 'true');
+            setHasQuestion(stored === 'true');
           } else {
-            // If no stored status, set hasWow based on current wows
-            // This assumes the user hasn't wowed if there are no wows
-            setHasWow(false);
+            // If no stored status, set hasQuestion based on current questions
+            // This assumes the user hasn't questioned if there are no questions
+            setHasQuestion(false);
           }
         }
       } catch (error) {
-        console.error('Error initializing wows:', error);
+        console.error('Error initializing questions:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initializeWows();
+    initializeQuestions();
   }, [bumperstickerId]);
 
-  const handleWow = async () => {
+  const handleQuestion = async () => {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
-      const newWows = hasWow ? Math.max(0, wows - 1) : wows + 1;
-      console.log('Attempting to update wows to:', newWows);
+      const newQuestions = hasQuestion ? Math.max(0, questions - 1) : questions + 1;
+      console.log('Attempting to update questions to:', newQuestions);
       
       // Update database first
       const { data, error } = await supabase
         .from('bumperstickers')
-        .update({ wows: newWows })
+        .update({ questions: newQuestions })
         .eq('id', bumperstickerId)
         .select();
 
@@ -78,16 +78,16 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
       console.log('Database update successful:', data);
 
       // Only update local state if database update was successful
-      setWows(newWows);
-      const newHasWow = !hasWow;
-      setHasWow(newHasWow);
+      setQuestions(newQuestions);
+      const newHasQuestion = !hasQuestion;
+      setHasQuestion(newHasQuestion);
       
       // Update localStorage
       if (typeof window !== 'undefined') {
-        localStorage.setItem(`wow_${bumperstickerId}`, String(newHasWow));
+        localStorage.setItem(`question_${bumperstickerId}`, String(newHasQuestion));
       }
     } catch (error) {
-      console.error('Error updating wows:', error);
+      console.error('Error updating questions:', error);
     } finally {
       setIsLoading(false);
     }
@@ -95,17 +95,17 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
 
   return (
     <button
-      onClick={handleWow}
+      onClick={handleQuestion}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasWow ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'
+        hasQuestion ? 'text-[#3A3735]' : 'text-gray-400 hover:text-[#3A3735]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasWow ? 'currentColor' : 'none'}
+        fill={hasQuestion ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
@@ -119,15 +119,15 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M12 6v6"
+          d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"
         />
         <circle
           cx="12"
-          cy="16"
+          cy="17"
           r="1.5"
         />
       </svg>
-      <span className="ml-[0px]">{wows}</span>
+      <span className="ml-[0px]">{questions}</span>
     </button>
   );
-}; 
+};
