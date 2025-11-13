@@ -113,18 +113,22 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
           cx="12"
           cy="12"
           r="10"
-          strokeWidth={2}
+          strokeWidth={1.5}
+          fill={hasWow ? 'currentColor' : 'none'}
         />
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M12 6v6"
+          d="M12 7v6"
+          fill="none"
         />
         <circle
           cx="12"
-          cy="16"
-          r="1.5"
+          cy="16.5"
+          r="0.75"
+          fill="currentColor"
+          stroke="none"
         />
       </svg>
       <span className="ml-[0px]">{wows}</span>

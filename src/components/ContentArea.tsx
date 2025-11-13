@@ -89,7 +89,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ config }) => {
 
   return (
     <div 
-      className={`${getBorderStyle()} select-none mt-[15%] md:mt-[30%]`} 
+      className={`${getBorderStyle()} select-none mt-[15%]`} 
       style={containerStyle}
     >
       {styleConfig.headingText && (

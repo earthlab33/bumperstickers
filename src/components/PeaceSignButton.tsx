@@ -102,26 +102,28 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
-      <svg
+        <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
         fill={hasSupport ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
-      >
+        >
         <circle
-          cx="12"
-          cy="12"
-          r="10"
-          strokeWidth={2}
+            cx="12"
+            cy="12"
+            r="9"
+            strokeWidth={1.5}
+            fill={hasSupport ? 'currentColor' : 'none'}
         />
         <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 4v14M12 18l-6-6M12 18l6-6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M12 3v18M12 12l-6.364 6.364M12 12l6.364 6.364"
+            fill="none"
         />
-      </svg>
+        </svg>
       <span className="ml-[0px]">{supports}</span>
     </button>
   );

@@ -102,31 +102,35 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
-      <svg
+        <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
         fill={hasConfused ? 'currentColor' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
-      >
+        >
         <circle
-          cx="12"
-          cy="12"
-          r="10"
-          strokeWidth={2}
+            cx="12"
+            cy="12"
+            r="10"
+            strokeWidth={1.5}
+            fill={hasConfused ? 'currentColor' : 'none'}
         />
         <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9.5 9.5a2.5 2.5 0 014.914.5c0 1.5-2.414 2.25-2.414 3.5"
+            fill="none"
         />
         <circle
-          cx="12"
-          cy="17"
-          r="1.5"
+            cx="12"
+            cy="17.5"
+            r="0.5"
+            fill="currentColor"
+            stroke="none"
         />
-      </svg>
+        </svg>
       <span className="ml-[0px]">{confuseds}</span>
     </button>
   );
