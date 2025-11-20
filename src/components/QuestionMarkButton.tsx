@@ -127,7 +127,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
             cx="12"
             cy="17.5"
             r="0.5"
-            fill="none"
+            fill="currentColor"
             stroke="none"
         />
         </svg>
