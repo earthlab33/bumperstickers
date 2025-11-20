@@ -105,7 +105,7 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
         <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasSupport ? 'currentColor' : 'none'}
+        fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
         >
@@ -114,7 +114,7 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
             cy="12"
             r="9"
             strokeWidth={1.5}
-            fill={hasSupport ? 'currentColor' : 'none'}
+            fill="none"
         />
         <path
             strokeLinecap="round"

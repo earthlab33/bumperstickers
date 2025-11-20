@@ -105,7 +105,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
         <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-8"
-        fill={hasConfused ? 'currentColor' : 'none'}
+        fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
         >
@@ -114,7 +114,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
             cy="12"
             r="10"
             strokeWidth={1.5}
-            fill={hasConfused ? 'currentColor' : 'none'}
+            fill="none"
         />
         <path
             strokeLinecap="round"
@@ -127,7 +127,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
             cx="12"
             cy="17.5"
             r="0.5"
-            fill="currentColor"
+            fill="none"
             stroke="none"
         />
         </svg>
