@@ -98,7 +98,7 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ bumperstickerId,
       onClick={handleInterest}
       disabled={isLoading}
       className={`interest-button p-2 rounded-full transition-colors ${
-        hasInterest ? 'text-[#EFCA79]' : 'text-gray-400 hover:text-[#EFCA79]'
+        hasInterest ? 'text-[#EFCA79]' : 'text-gray-200 hover:text-[#EFCA79]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >

@@ -98,7 +98,7 @@ export const QuestionMarkButton: React.FC<QuestionMarkButtonProps> = ({ bumperst
       onClick={handleConfused}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasConfused ? 'text-[#3A3735]' : 'text-gray-400 hover:text-[#3A3735]'
+        hasConfused ? 'text-[#3A3735]' : 'text-gray-200 hover:text-[#3A3735]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >

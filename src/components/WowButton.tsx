@@ -98,7 +98,7 @@ export const WowButton: React.FC<WowButtonProps> = ({ bumperstickerId, title }) 
       onClick={handleWow}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasWow ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'
+        hasWow ? 'text-yellow-500' : 'text-gray-200 hover:text-yellow-500'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >

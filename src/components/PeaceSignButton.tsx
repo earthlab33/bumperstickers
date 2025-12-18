@@ -98,7 +98,7 @@ export const PeaceSignButton: React.FC<PeaceSignButtonProps> = ({ bumperstickerI
       onClick={handleSupport}
       disabled={isLoading}
       className={`like-button p-2 rounded-full transition-colors ${
-        hasSupport ? 'text-[#BCD2ED]' : 'text-gray-400 hover:text-[#BCD2ED]'
+        hasSupport ? 'text-[#BCD2ED]' : 'text-gray-200 hover:text-[#BCD2ED]'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       title={title}
     >
