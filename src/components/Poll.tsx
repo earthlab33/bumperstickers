@@ -81,31 +81,80 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
+      // Try direct insert first (fallback if RLS allows it)
+      // If RLS blocks anonymous inserts, use an RPC function instead
+      const { data, error } = await supabase
         .from('poll_responses')
         .insert([{ 
           bumpersticker_id: bumperstickerId,
           sanity_poll_id: poll._id,
           responses: answers,
           submitted_at: new Date().toISOString()
-        }]);
+        }])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        // If we get an RLS/permission error, try using RPC function
+        const isRlsError = error.code === '42501' || 
+                          error.message?.includes('permission') || 
+                          error.message?.includes('RLS') || 
+                          error.message?.includes('row-level security') ||
+                          error.code === 'PGRST301';
+        
+        if (isRlsError) {
+          console.log('RLS error detected, attempting RPC function call...');
+          // Try calling an RPC function that should have SECURITY DEFINER
+          const { data: rpcData, error: rpcError } = await supabase
+            .rpc('submit_poll_response', {
+              p_bumpersticker_id: bumperstickerId,
+              p_sanity_poll_id: poll._id,
+              p_responses: answers,
+              p_submitted_at: new Date().toISOString()
+            });
+
+          if (rpcError) {
+            console.error('RPC function error:', rpcError);
+            // If function doesn't exist, provide helpful error message
+            if (rpcError.message?.includes('does not exist') || rpcError.code === '42883') {
+              throw new Error('The database function submit_poll_response does not exist. Please run the SQL script create_poll_response_function.sql in your Supabase SQL editor.');
+            }
+            throw rpcError;
+          }
+
+          console.log('Poll submitted via RPC successfully:', rpcData);
+        } else {
+          throw error;
+        }
+      } else {
+        console.log('Poll submitted successfully:', data);
+      }
 
       // Mark as submitted and store in localStorage
       setIsSubmitted(true);
       const submittedKey = `poll_submitted_${bumperstickerId}`;
       localStorage.setItem(submittedKey, 'true');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting poll:', error);
-      alert('Error submitting poll. Please try again.');
+      const errorMessage = error?.message || 'Unknown error occurred';
+      const isRlsError = error?.code === '42501' || 
+                        error?.code === 'PGRST301' ||
+                        errorMessage.includes('permission') || 
+                        errorMessage.includes('RLS') || 
+                        errorMessage.includes('row-level security') ||
+                        errorMessage.includes('function') && errorMessage.includes('does not exist');
+      
+      if (isRlsError) {
+        alert(`Permission denied: ${errorMessage}. The database function 'submit_poll_response' may need to be created with SECURITY DEFINER, or RLS policies need to allow anonymous inserts.`);
+      } else {
+        alert(`Error submitting poll: ${errorMessage}. Please try again.`);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isLoading) {
-    return <div className="text-center">Loading poll...</div>;
+    return <div className="text-center text-gray-200">Loading poll...</div>;
   }
 
   if (!poll) {
@@ -114,7 +163,7 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
 
   if (isSubmitted) {
     return (
-      <div className="text-center">
+      <div className="text-center text-gray-200">
         <h3 className="text-md font-bold text-gray-200 mb-3">Thank you!</h3>
         <p className="text-gray-200 text-md">Your poll response has been submitted successfully.</p>
       </div>
@@ -124,13 +173,13 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-2">{poll.title}</h2>
-        <p className="text-gray-600 mb-6">{poll.description}</p>
+        <h2 className="text-2xl font-bold mb-2 text-gray-200">{poll.title}</h2>
+        <p className="text-gray-200 mb-6">{poll.description}</p>
         
         <div className="w-3/5 space-y-6">
           {poll.questions.map((question, index) => (
             <div key={index} className="border-b pb-4">
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="text-lg font-semibold mb-2 text-gray-200">
                 {question.questionText}
                 {question.required && <span className="text-red-500 ml-1">*</span>}
               </h3>
@@ -139,7 +188,7 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
                 <textarea
                   value={answers[question.questionText] as string}
                   onChange={(e) => handleTextChange(question.questionText, e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-lg text-gray-200"
                   rows={4}
                   placeholder="Enter your answer..."
                   required={question.required}
@@ -160,10 +209,10 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
                           option,
                           question.questionType === 'multiple-choice'
                         )}
-                        className="form-checkbox h-4 w-4 text-blue-600"
+                        className="form-checkbox h-4 w-4 text-gray-200"
                         required={question.required && question.questionType === 'single-choice'}
                       />
-                      <span>{option}</span>
+                      <span className="text-gray-200">{option}</span>
                     </label>
                   ))}
                 </div>
@@ -175,7 +224,7 @@ export const Poll: React.FC<PollProps> = ({ bumperstickerId }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          className="mt-6 px-6 py-2 bg-[#BCD2ED] text-white rounded-lg hover:bg-[#BCD2ED]/80 disabled:opacity-50"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Poll'}
         </button>
